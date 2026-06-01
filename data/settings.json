@@ -163,7 +163,7 @@
         "logo_height": 40,
         "menu_position": "right",
         "menu_alignment": "right",
-        "contact_email": "info@learn.gheir.com",
+        "contact_email": "contact@learn.gheir.com",
         "footer_text": "جميع الحقوق محفوظة"
     },
     "menu": {
@@ -258,6 +258,6 @@
         "linkedin": "https:\/\/linkedin.com",
         "twitter": "https:\/\/twitter.com",
         "instagram": "https:\/\/instagram.com",
-        "email": "info@learn.gheir.com"
+        "email": "contact@learn.gheir.com"
     }
 }
