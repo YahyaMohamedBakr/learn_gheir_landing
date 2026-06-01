@@ -76,7 +76,12 @@
   "site": {
     "title": "Learn.Gheir",
     "description": "منصة تعليمية ذكية تستخدم الذكاء الاصطناعي لتقديم تجربة تعلم مخصصة لكل متعلم عربي",
+    "logo_type": "text",
     "logo_text": "Learn.Gheir",
+    "logo_image": "",
+    "logo_width": 40,
+    "logo_height": 40,
+    "menu_alignment": "right",
     "contact_email": "info@learn.gheir.com",
     "footer_text": "جميع الحقوق محفوظة"
   },

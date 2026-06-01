@@ -377,17 +377,14 @@ $colors = $settings['colors'] ?? [];
             <div class="card">
                 <form method="POST" action="save.php">
                     <input type="hidden" name="_section" value="site">
+                    <h3 style="margin-bottom:1rem;font-size:1.125rem">المعلومات الأساسية</h3>
                     <div class="form-group">
                         <label>عنوان الموقع (Site Title)</label>
                         <input type="text" name="site_title" value="<?= htmlspecialchars($site['title'] ?? '') ?>">
                     </div>
                     <div class="form-group">
                         <label>وصف الموقع (Meta Description)</label>
-                        <textarea name="site_description" rows="3"><?= htmlspecialchars($site['description'] ?? '') ?></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>نص الشعار (Logo Text)</label>
-                        <input type="text" name="site_logo_text" value="<?= htmlspecialchars($site['logo_text'] ?? '') ?>">
+                        <textarea name="site_description" rows="2"><?= htmlspecialchars($site['description'] ?? '') ?></textarea>
                     </div>
                     <div class="form-group">
                         <label>بريد التواصل</label>
@@ -397,9 +394,83 @@ $colors = $settings['colors'] ?? [];
                         <label>نص التذييل (Footer)</label>
                         <input type="text" name="site_footer_text" value="<?= htmlspecialchars($site['footer_text'] ?? '') ?>">
                     </div>
+
+                    <h3 style="margin:1.5rem 0 1rem;font-size:1.125rem">إعدادات الشعار (Logo)</h3>
+                    <div class="form-group">
+                        <label>نوع الشعار</label>
+                        <select name="site_logo_type" onchange="toggleLogoType(this.value)">
+                            <option value="text" <?= ($site['logo_type'] ?? 'text') === 'text' ? 'selected' : '' ?>>نص</option>
+                            <option value="image" <?= ($site['logo_type'] ?? 'text') === 'image' ? 'selected' : '' ?>>صورة</option>
+                        </select>
+                    </div>
+                    <div id="logoTextField" style="display:<?= ($site['logo_type'] ?? 'text') === 'text' ? 'block' : 'none' ?>">
+                        <div class="form-group">
+                            <label>نص الشعار</label>
+                            <input type="text" name="site_logo_text" value="<?= htmlspecialchars($site['logo_text'] ?? '') ?>">
+                        </div>
+                    </div>
+                    <div id="logoImageField" style="display:<?= ($site['logo_type'] ?? 'text') === 'image' ? 'block' : 'none' ?>">
+                        <div class="form-group">
+                            <label>رابط صورة الشعار</label>
+                            <div style="display:flex;gap:0.5rem">
+                                <input type="text" name="site_logo_image" id="logoImageInput" value="<?= htmlspecialchars($site['logo_image'] ?? '') ?>" placeholder="assets/img/logo.png">
+                                <button type="button" class="btn btn-sm btn-outline" onclick="document.getElementById('logoFileInput').click()">اختر</button>
+                                <input type="file" id="logoFileInput" accept="image/*" style="display:none" onchange="uploadLogo(this)">
+                            </div>
+                            <?php if (!empty($site['logo_image'])): ?>
+                            <div style="margin-top:0.5rem"><img src="../<?= htmlspecialchars($site['logo_image']) ?>" style="max-width:120px;max-height:60px;border:1px solid var(--admin-border);border-radius:0.375rem;padding:0.25rem"></div>
+                            <?php endif; ?>
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+                            <div class="form-group">
+                                <label>العرض (px)</label>
+                                <input type="number" name="site_logo_width" value="<?= $site['logo_width'] ?? 40 ?>" min="16" max="500">
+                            </div>
+                            <div class="form-group">
+                                <label>الارتفاع (px)</label>
+                                <input type="number" name="site_logo_height" value="<?= $site['logo_height'] ?? 40 ?>" min="16" max="500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin:1.5rem 0 1rem;font-size:1.125rem">اتجاه القائمة</h3>
+                    <div class="form-group">
+                        <label>محاذاة القائمة في الهيدر</label>
+                        <select name="site_menu_alignment">
+                            <option value="right" <?= ($site['menu_alignment'] ?? 'right') === 'right' ? 'selected' : '' ?>>اليمين (افتراضي عربي)</option>
+                            <option value="left" <?= ($site['menu_alignment'] ?? 'right') === 'left' ? 'selected' : '' ?>>الشمال</option>
+                        </select>
+                        <small style="color:var(--admin-text-muted);font-size:0.75rem">بالنسبة للاتجاه RTL، اليمين يعني بداية الصفحة والشمال يعني نهايتها.</small>
+                    </div>
+
                     <button type="submit" class="btn btn-primary">حفظ الإعدادات</button>
                 </form>
             </div>
+            <script>
+            function toggleLogoType(val) {
+                document.getElementById('logoTextField').style.display = val === 'text' ? 'block' : 'none';
+                document.getElementById('logoImageField').style.display = val === 'image' ? 'block' : 'none';
+            }
+            function uploadLogo(input) {
+                var file = input.files[0];
+                if (!file) return;
+                var formData = new FormData();
+                formData.append('file', file);
+                var btn = input.previousElementSibling;
+                btn.textContent = 'جاري...';
+                fetch('upload.php', { method: 'POST', body: formData })
+                    .then(function(r) { return r.json(); })
+                    .then(function(data) {
+                        btn.textContent = 'اختر';
+                        if (data.success) {
+                            document.getElementById('logoImageInput').value = data.url;
+                        } else {
+                            alert(data.error);
+                        }
+                    })
+                    .catch(function() { btn.textContent = 'اختر'; alert('فشل الرفع'); });
+            }
+            </script>
             <?php endif; ?>
 
             <!-- Menu Tab -->

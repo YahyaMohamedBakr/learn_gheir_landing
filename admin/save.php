@@ -56,7 +56,12 @@ if ($section === 'smtp') {
 if ($section === 'site') {
     $settings['site']['title'] = $_POST['site_title'] ?? '';
     $settings['site']['description'] = $_POST['site_description'] ?? '';
+    $settings['site']['logo_type'] = $_POST['site_logo_type'] ?? 'text';
     $settings['site']['logo_text'] = $_POST['site_logo_text'] ?? '';
+    $settings['site']['logo_image'] = $_POST['site_logo_image'] ?? '';
+    $settings['site']['logo_width'] = (int)($_POST['site_logo_width'] ?? 40);
+    $settings['site']['logo_height'] = (int)($_POST['site_logo_height'] ?? 40);
+    $settings['site']['menu_alignment'] = $_POST['site_menu_alignment'] ?? 'right';
     $settings['site']['contact_email'] = $_POST['site_contact_email'] ?? '';
     $settings['site']['footer_text'] = $_POST['site_footer_text'] ?? '';
     $_SESSION['admin_msg'] = 'تم حفظ إعدادات الموقع بنجاح';

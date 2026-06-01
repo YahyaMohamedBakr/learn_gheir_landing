@@ -81,17 +81,28 @@ function sectionEnabled($key) {
 
   <div id="toastContainer" class="toast-container"></div>
 
+  <?php
+  $logoType = $site['logo_type'] ?? 'text';
+  $logoText = $site['logo_text'] ?? 'Learn.Gheir';
+  $logoImage = $site['logo_image'] ?? '';
+  $logoWidth = $site['logo_width'] ?? 40;
+  $logoHeight = $site['logo_height'] ?? 40;
+  $menuAlign = $site['menu_alignment'] ?? 'right';
+  ?>
   <header id="header" class="header">
     <div class="section-container" style="width:100%">
       <div class="header-inner">
         <a href="#home" class="logo">
+          <?php if ($logoType === 'image' && !empty($logoImage)): ?>
+          <img src="<?= htmlspecialchars($logoImage) ?>" alt="<?= htmlspecialchars($logoText) ?>" style="width:<?= (int)$logoWidth ?>px;height:<?= (int)$logoHeight ?>px;object-fit:contain">
+          <?php else: ?>
           <svg class="logo-icon"><use href="#icon-graduation-cap"/></svg>
-          <span class="logo-text gradient-text"><?= htmlspecialchars($site['logo_text'] ?? 'Learn.Gheir') ?></span>
+          <span class="logo-text gradient-text"><?= htmlspecialchars($logoText) ?></span>
+          <?php endif; ?>
         </a>
-        <nav class="nav-items" id="navItems">
+        <nav class="nav-items" id="navItems" style="margin-<?= $menuAlign === 'left' ? 'left' : 'right' ?>:auto">
           <?php foreach ($menuItems as $item): ?>
-            <?php $isCta = !empty($item['cta']); ?>
-            <a href="<?= htmlspecialchars($item['href']) ?>" class="nav-link mobile-nav-link <?= $isCta ? 'nav-cta' : '' ?>"><?= htmlspecialchars($item['label']) ?></a>
+            <a href="<?= htmlspecialchars($item['href']) ?>" class="nav-link mobile-nav-link"><?= htmlspecialchars($item['label']) ?></a>
           <?php endforeach; ?>
           <a href="#early-access" class="nav-cta mobile-nav-link"><?= htmlspecialchars($content['hero_cta_primary']) ?></a>
         </nav>
@@ -449,7 +460,13 @@ function sectionEnabled($key) {
     <footer class="footer">
       <div class="section-container footer-inner">
         <div class="footer-brand">
-          <a href="#home" class="footer-logo"><svg><use href="#icon-graduation-cap"/></svg><span class="logo-text gradient-text"><?= htmlspecialchars($site['logo_text'] ?? 'Learn.Gheir') ?></span></a>
+          <a href="#home" class="footer-logo">
+            <?php if ($logoType === 'image' && !empty($logoImage)): ?>
+            <img src="<?= htmlspecialchars($logoImage) ?>" alt="<?= htmlspecialchars($logoText) ?>" style="width:<?= (int)$logoWidth ?>px;height:<?= (int)$logoHeight ?>px;object-fit:contain">
+            <?php else: ?>
+            <svg><use href="#icon-graduation-cap"/></svg><span class="logo-text gradient-text"><?= htmlspecialchars($logoText) ?></span>
+            <?php endif; ?>
+          </a>
           <div class="footer-email"><svg><use href="#icon-mail"/></svg><a href="mailto:<?= htmlspecialchars($social['email'] ?? $site['contact_email'] ?? 'info@learn.gheir.com') ?>"><?= htmlspecialchars($social['email'] ?? $site['contact_email'] ?? 'info@learn.gheir.com') ?></a></div>
         </div>
         <div class="footer-social">
