@@ -72,7 +72,7 @@ $submissions[] = $submission;
 file_put_contents($submissionsFile, json_encode($submissions, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
 $emailSent = false;
-if (!empty($smtpConfig['host']) && !empty($smtpConfig['username']) && !empty($smtpConfig['password'])) {
+if (!empty($smtpConfig['host'])) {
     $roleLabels = [
         'student' => 'طالب',
         'parent' => 'ولي أمر',
