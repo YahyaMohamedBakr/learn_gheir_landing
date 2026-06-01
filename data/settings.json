@@ -148,8 +148,8 @@
         "host": "smtp.zoho.com",
         "port": 587,
         "username": "contact@learn.gheir.org",
-        "password": "",
-        "encryption": "tls",
+        "password": "", 
+        "encryption": "tls", 
         "from_email": "contact@learn.gheir.org",
         "from_name": "Learn.Gheir"
     },
