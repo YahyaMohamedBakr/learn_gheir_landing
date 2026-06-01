@@ -10,6 +10,14 @@ $settingsFile = __DIR__ . '/../data/settings.json';
 $settings = json_decode(file_get_contents($settingsFile), true);
 $section = $_POST['_section'] ?? '';
 
+function saveAndExit($settings, $settingsFile, $redirect) {
+    file_put_contents($settingsFile, json_encode($settings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    $_SESSION['admin_msg'] = $_SESSION['admin_msg'] ?? 'تم الحفظ بنجاح';
+    $_SESSION['admin_msg_type'] = $_SESSION['admin_msg_type'] ?? 'success';
+    header('Location: ' . $redirect);
+    exit;
+}
+
 if ($section === 'colors') {
     foreach ($settings['colors'] as $key => &$color) {
         if (isset($_POST[$key . '_h'])) {
@@ -20,9 +28,7 @@ if ($section === 'colors') {
     }
     unset($color);
     $_SESSION['admin_msg'] = 'تم حفظ الألوان بنجاح';
-    $_SESSION['admin_msg_type'] = 'success';
-    header('Location: dashboard.php?tab=colors');
-    exit;
+    saveAndExit($settings, $settingsFile, 'dashboard.php?tab=colors');
 }
 
 if ($section === 'content') {
@@ -32,9 +38,7 @@ if ($section === 'content') {
         }
     }
     $_SESSION['admin_msg'] = 'تم حفظ المحتوى بنجاح';
-    $_SESSION['admin_msg_type'] = 'success';
-    header('Location: dashboard.php?tab=content');
-    exit;
+    saveAndExit($settings, $settingsFile, 'dashboard.php?tab=content');
 }
 
 if ($section === 'smtp') {
@@ -48,9 +52,7 @@ if ($section === 'smtp') {
         $settings['smtp']['password'] = $_POST['smtp_password'];
     }
     $_SESSION['admin_msg'] = 'تم حفظ إعدادات SMTP بنجاح';
-    $_SESSION['admin_msg_type'] = 'success';
-    header('Location: dashboard.php?tab=smtp');
-    exit;
+    saveAndExit($settings, $settingsFile, 'dashboard.php?tab=smtp');
 }
 
 if ($section === 'site') {
@@ -65,9 +67,7 @@ if ($section === 'site') {
     $settings['site']['contact_email'] = $_POST['site_contact_email'] ?? '';
     $settings['site']['footer_text'] = $_POST['site_footer_text'] ?? '';
     $_SESSION['admin_msg'] = 'تم حفظ إعدادات الموقع بنجاح';
-    $_SESSION['admin_msg_type'] = 'success';
-    header('Location: dashboard.php?tab=site');
-    exit;
+    saveAndExit($settings, $settingsFile, 'dashboard.php?tab=site');
 }
 
 if ($section === 'menu') {
@@ -83,9 +83,7 @@ if ($section === 'menu') {
     }
     $settings['menu']['items'] = $items;
     $_SESSION['admin_msg'] = 'تم حفظ القائمة بنجاح';
-    $_SESSION['admin_msg_type'] = 'success';
-    header('Location: dashboard.php?tab=menu');
-    exit;
+    saveAndExit($settings, $settingsFile, 'dashboard.php?tab=menu');
 }
 
 if ($section === 'sections') {
@@ -94,9 +92,7 @@ if ($section === 'sections') {
     }
     unset($sec);
     $_SESSION['admin_msg'] = 'تم حفظ إعدادات الأقسام بنجاح';
-    $_SESSION['admin_msg_type'] = 'success';
-    header('Location: dashboard.php?tab=sections');
-    exit;
+    saveAndExit($settings, $settingsFile, 'dashboard.php?tab=sections');
 }
 
 if ($section === 'team') {
@@ -121,9 +117,7 @@ if ($section === 'team') {
     }
     $settings['team'] = $team;
     $_SESSION['admin_msg'] = 'تم حفظ فريق العمل بنجاح';
-    $_SESSION['admin_msg_type'] = 'success';
-    header('Location: dashboard.php?tab=team');
-    exit;
+    saveAndExit($settings, $settingsFile, 'dashboard.php?tab=team');
 }
 
 if ($section === 'team_new') {
@@ -136,9 +130,7 @@ if ($section === 'team_new') {
         'linkedin' => ''
     ];
     $_SESSION['admin_msg'] = 'تم إضافة عضو جديد';
-    $_SESSION['admin_msg_type'] = 'success';
-    header('Location: dashboard.php?tab=team');
-    exit;
+    saveAndExit($settings, $settingsFile, 'dashboard.php?tab=team');
 }
 
 if ($section === 'team_delete') {
@@ -147,9 +139,7 @@ if ($section === 'team_delete') {
         return $m['id'] !== $deleteId;
     }));
     $_SESSION['admin_msg'] = 'تم حذف العضو';
-    $_SESSION['admin_msg_type'] = 'success';
-    header('Location: dashboard.php?tab=team');
-    exit;
+    saveAndExit($settings, $settingsFile, 'dashboard.php?tab=team');
 }
 
 if ($section === 'social') {
@@ -158,11 +148,7 @@ if ($section === 'social') {
     $settings['social']['instagram'] = $_POST['social_instagram'] ?? '';
     $settings['social']['email'] = $_POST['social_email'] ?? '';
     $_SESSION['admin_msg'] = 'تم حفظ روابط التواصل بنجاح';
-    $_SESSION['admin_msg_type'] = 'success';
-    header('Location: dashboard.php?tab=social');
-    exit;
+    saveAndExit($settings, $settingsFile, 'dashboard.php?tab=social');
 }
-
-file_put_contents($settingsFile, json_encode($settings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
 header('Location: dashboard.php');
