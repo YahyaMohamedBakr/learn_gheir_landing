@@ -18,6 +18,7 @@ if ($section === 'colors') {
             $color['l'] = (int)$_POST[$key . '_l'];
         }
     }
+    unset($color);
     $_SESSION['admin_msg'] = 'تم حفظ الألوان بنجاح';
     $_SESSION['admin_msg_type'] = 'success';
     header('Location: dashboard.php?tab=colors');
@@ -51,5 +52,112 @@ if ($section === 'smtp') {
     header('Location: dashboard.php?tab=smtp');
     exit;
 }
+
+if ($section === 'site') {
+    $settings['site']['title'] = $_POST['site_title'] ?? '';
+    $settings['site']['description'] = $_POST['site_description'] ?? '';
+    $settings['site']['logo_text'] = $_POST['site_logo_text'] ?? '';
+    $settings['site']['contact_email'] = $_POST['site_contact_email'] ?? '';
+    $settings['site']['footer_text'] = $_POST['site_footer_text'] ?? '';
+    $_SESSION['admin_msg'] = 'تم حفظ إعدادات الموقع بنجاح';
+    $_SESSION['admin_msg_type'] = 'success';
+    header('Location: dashboard.php?tab=site');
+    exit;
+}
+
+if ($section === 'menu') {
+    $labels = $_POST['menu_label'] ?? [];
+    $hrefs = $_POST['menu_href'] ?? [];
+    $items = [];
+    foreach ($labels as $i => $label) {
+        $label = trim($label);
+        $href = trim($hrefs[$i] ?? '');
+        if ($label !== '' && $href !== '') {
+            $items[] = ['label' => $label, 'href' => $href];
+        }
+    }
+    $settings['menu']['items'] = $items;
+    $_SESSION['admin_msg'] = 'تم حفظ القائمة بنجاح';
+    $_SESSION['admin_msg_type'] = 'success';
+    header('Location: dashboard.php?tab=menu');
+    exit;
+}
+
+if ($section === 'sections') {
+    foreach ($settings['sections'] as $key => &$sec) {
+        $sec['enabled'] = isset($_POST['sec_' . $key]) && $_POST['sec_' . $key] === '1';
+    }
+    unset($sec);
+    $_SESSION['admin_msg'] = 'تم حفظ إعدادات الأقسام بنجاح';
+    $_SESSION['admin_msg_type'] = 'success';
+    header('Location: dashboard.php?tab=sections');
+    exit;
+}
+
+if ($section === 'team') {
+    $ids = $_POST['team_id'] ?? [];
+    $names = $_POST['team_name'] ?? [];
+    $roles = $_POST['team_role'] ?? [];
+    $bios = $_POST['team_bio'] ?? [];
+    $images = $_POST['team_image'] ?? [];
+    $linkedins = $_POST['team_linkedin'] ?? [];
+    $team = [];
+    foreach ($ids as $i => $id) {
+        $name = trim($names[$i] ?? '');
+        if ($name === '') continue;
+        $team[] = [
+            'id' => (int)$id,
+            'name' => $name,
+            'role' => trim($roles[$i] ?? ''),
+            'bio' => trim($bios[$i] ?? ''),
+            'image' => trim($images[$i] ?? ''),
+            'linkedin' => trim($linkedins[$i] ?? '')
+        ];
+    }
+    $settings['team'] = $team;
+    $_SESSION['admin_msg'] = 'تم حفظ فريق العمل بنجاح';
+    $_SESSION['admin_msg_type'] = 'success';
+    header('Location: dashboard.php?tab=team');
+    exit;
+}
+
+if ($section === 'team_new') {
+    $settings['team'][] = [
+        'id' => time(),
+        'name' => 'عضو جديد',
+        'role' => '',
+        'bio' => '',
+        'image' => '',
+        'linkedin' => ''
+    ];
+    $_SESSION['admin_msg'] = 'تم إضافة عضو جديد';
+    $_SESSION['admin_msg_type'] = 'success';
+    header('Location: dashboard.php?tab=team');
+    exit;
+}
+
+if ($section === 'team_delete') {
+    $deleteId = (int)($_POST['team_delete_id'] ?? 0);
+    $settings['team'] = array_values(array_filter($settings['team'], function($m) use ($deleteId) {
+        return $m['id'] !== $deleteId;
+    }));
+    $_SESSION['admin_msg'] = 'تم حذف العضو';
+    $_SESSION['admin_msg_type'] = 'success';
+    header('Location: dashboard.php?tab=team');
+    exit;
+}
+
+if ($section === 'social') {
+    $settings['social']['linkedin'] = $_POST['social_linkedin'] ?? '';
+    $settings['social']['twitter'] = $_POST['social_twitter'] ?? '';
+    $settings['social']['instagram'] = $_POST['social_instagram'] ?? '';
+    $settings['social']['email'] = $_POST['social_email'] ?? '';
+    $_SESSION['admin_msg'] = 'تم حفظ روابط التواصل بنجاح';
+    $_SESSION['admin_msg_type'] = 'success';
+    header('Location: dashboard.php?tab=social');
+    exit;
+}
+
+file_put_contents($settingsFile, json_encode($settings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
 header('Location: dashboard.php');

@@ -3,14 +3,24 @@ $settingsFile = __DIR__ . '/data/settings.json';
 $settings = json_decode(file_get_contents($settingsFile), true);
 $c = $settings['colors'];
 $content = $settings['content'];
+$site = $settings['site'] ?? [];
+$menuItems = $settings['menu']['items'] ?? [];
+$sections = $settings['sections'] ?? [];
+$team = $settings['team'] ?? [];
+$social = $settings['social'] ?? [];
+
+function sectionEnabled($key) {
+    global $sections;
+    return !isset($sections[$key]) || $sections[$key]['enabled'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Learn.Gheir - <?= htmlspecialchars($content['hero_title']) ?></title>
-  <meta name="description" content="منصة تعليمية ذكية تستخدم الذكاء الاصطناعي لتقديم تجربة تعلم مخصصة لكل متعلم عربي" />
+  <title><?= htmlspecialchars($site['title'] ?? 'Learn.Gheir') ?> - <?= htmlspecialchars($content['hero_title']) ?></title>
+  <meta name="description" content="<?= htmlspecialchars($site['description'] ?? '') ?>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
@@ -76,13 +86,13 @@ $content = $settings['content'];
       <div class="header-inner">
         <a href="#home" class="logo">
           <svg class="logo-icon"><use href="#icon-graduation-cap"/></svg>
-          <span class="logo-text gradient-text">Learn.Gheir</span>
+          <span class="logo-text gradient-text"><?= htmlspecialchars($site['logo_text'] ?? 'Learn.Gheir') ?></span>
         </a>
         <nav class="nav-items" id="navItems">
-          <a href="#home" class="nav-link mobile-nav-link">الرئيسية</a>
-          <a href="#features" class="nav-link mobile-nav-link">المميزات</a>
-          <a href="#team" class="nav-link mobile-nav-link">الفريق</a>
-          <a href="#contact" class="nav-link mobile-nav-link">تواصل معنا</a>
+          <?php foreach ($menuItems as $item): ?>
+            <?php $isCta = !empty($item['cta']); ?>
+            <a href="<?= htmlspecialchars($item['href']) ?>" class="nav-link mobile-nav-link <?= $isCta ? 'nav-cta' : '' ?>"><?= htmlspecialchars($item['label']) ?></a>
+          <?php endforeach; ?>
           <a href="#early-access" class="nav-cta mobile-nav-link"><?= htmlspecialchars($content['hero_cta_primary']) ?></a>
         </nav>
         <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Toggle menu">
@@ -96,6 +106,7 @@ $content = $settings['content'];
     <main class="flex-1">
 
       <!-- Hero -->
+      <?php if (sectionEnabled('hero')): ?>
       <section id="home" class="hero">
         <div class="hero-bg"><div class="hero-gradient"></div><div class="hero-grid"></div></div>
         <div class="section-container hero-content">
@@ -145,8 +156,10 @@ $content = $settings['content'];
           </div>
         </div>
       </section>
+      <?php endif; ?>
 
       <!-- Problem -->
+      <?php if (sectionEnabled('problem')): ?>
       <section class="py-20" style="background:hsl(var(--background))">
         <div class="section-container">
           <div class="text-center mb-16" data-anim="fade-up">
@@ -172,8 +185,10 @@ $content = $settings['content'];
           </div>
         </div>
       </section>
+      <?php endif; ?>
 
       <!-- Solution -->
+      <?php if (sectionEnabled('solution')): ?>
       <section id="solution" class="py-20 solution-section">
         <div class="section-container">
           <div class="text-center mb-12" data-anim="fade-up">
@@ -195,8 +210,10 @@ $content = $settings['content'];
           </div>
         </div>
       </section>
+      <?php endif; ?>
 
       <!-- Learning Paths -->
+      <?php if (sectionEnabled('learning_paths')): ?>
       <section class="learning-paths-section">
         <div class="particles" id="particles"></div>
         <div class="section-container" style="position:relative;z-index:10">
@@ -274,8 +291,10 @@ $content = $settings['content'];
           </div>
         </div>
       </section>
+      <?php endif; ?>
 
       <!-- Decision Logic -->
+      <?php if (sectionEnabled('decision_logic')): ?>
       <section class="py-20" style="background:hsl(var(--background))">
         <div class="section-container">
           <div class="text-center mb-14" style="max-width:56rem;margin-inline:auto" data-anim="fade-up">
@@ -293,8 +312,10 @@ $content = $settings['content'];
           <div class="decision-box" data-anim="fade-up" data-delay="300"><div class="decision-grid"><div><p class="decision-label">المدخلات</p><p class="decision-value">اختبار + سلوك + هدف</p></div><div><p class="decision-label">المعالجة</p><p class="decision-value">Decision Engine قابل للتطوير</p></div><div><p class="decision-label">المخرج</p><p class="decision-value">مسار تعلم مخصص وقابل للقياس</p></div></div></div>
         </div>
       </section>
+      <?php endif; ?>
 
       <!-- Features -->
+      <?php if (sectionEnabled('features')): ?>
       <section id="features" class="py-20" style="background:hsl(var(--background))">
         <div class="section-container">
           <div class="text-center mb-16" data-anim="fade-up">
@@ -311,8 +332,10 @@ $content = $settings['content'];
           </div>
         </div>
       </section>
+      <?php endif; ?>
 
       <!-- Vision -->
+      <?php if (sectionEnabled('vision')): ?>
       <section class="py-20 vision-section">
         <div class="section-container">
           <div class="text-center" style="max-width:56rem;margin:0 auto" data-anim="fade-up">
@@ -328,8 +351,10 @@ $content = $settings['content'];
           </div>
         </div>
       </section>
+      <?php endif; ?>
 
       <!-- Team -->
+      <?php if (sectionEnabled('team')): ?>
       <section id="team" class="py-20" style="background:hsl(var(--background))">
         <div class="section-container">
           <div class="text-center mb-16" data-anim="fade-up">
@@ -337,23 +362,33 @@ $content = $settings['content'];
             <p class="section-subtitle"><?= htmlspecialchars($content['team_subtitle']) ?></p>
           </div>
           <div class="team-grid">
+            <?php foreach ($team as $t): ?>
             <div class="founder-card" data-anim="fade-scale">
-              <div class="founder-image-wrap"><img src="https://horizons-cdn.hostinger.com/614f1e1b-6555-4249-87cc-c37e36c951d8/094853e2df9cc6624afb6e65a7dca5f0.jpg" alt="مصطفى عطية" style="object-position:center 35%" loading="lazy"/><div class="founder-image-gradient"></div><a href="https://www.linkedin.com/in/mostafaattya/" target="_blank" rel="noopener noreferrer" class="founder-linkedin"><svg><use href="#icon-linkedin"/></svg></a><div class="founder-info"><h3 class="founder-name">مصطفى عطية</h3><p class="founder-role">الاستراتيجية والعمليات</p></div></div>
-              <div class="founder-bio"><p>خبرة في إدارة المشاريع التعليمية وتطوير الاستراتيجيات التقنية</p></div>
+              <div class="founder-image-wrap">
+                <?php if (!empty($t['image'])): ?>
+                <img src="<?= htmlspecialchars($t['image']) ?>" alt="<?= htmlspecialchars($t['name']) ?>" style="object-position:center 35%" loading="lazy"/>
+                <?php else: ?>
+                <div style="width:100%;height:100%;background:hsl(var(--muted));display:flex;align-items:center;justify-content:center;font-size:3rem;color:hsl(var(--muted-foreground))">?</div>
+                <?php endif; ?>
+                <div class="founder-image-gradient"></div>
+                <?php if (!empty($t['linkedin'])): ?>
+                <a href="<?= htmlspecialchars($t['linkedin']) ?>" target="_blank" rel="noopener noreferrer" class="founder-linkedin"><svg><use href="#icon-linkedin"/></svg></a>
+                <?php endif; ?>
+                <div class="founder-info">
+                  <h3 class="founder-name"><?= htmlspecialchars($t['name']) ?></h3>
+                  <p class="founder-role"><?= htmlspecialchars($t['role']) ?></p>
+                </div>
+              </div>
+              <div class="founder-bio"><p><?= htmlspecialchars($t['bio']) ?></p></div>
             </div>
-            <div class="founder-card" data-anim="fade-scale" data-delay="150">
-              <div class="founder-image-wrap"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e" alt="يحيى" style="object-position:center" loading="lazy"/><div class="founder-image-gradient"></div><div class="founder-info"><h3 class="founder-name">يحيى</h3><p class="founder-role">التقنية والذكاء الاصطناعي</p></div></div>
-              <div class="founder-bio"><p>متخصص في تطوير حلول الذكاء الاصطناعي والتعلم الآلي</p></div>
-            </div>
-            <div class="founder-card" data-anim="fade-scale" data-delay="300">
-              <div class="founder-image-wrap"><img src="https://horizons-cdn.hostinger.com/614f1e1b-6555-4249-87cc-c37e36c951d8/809d97905d5bc0a979905238fe2d9987.jpg" alt="أحمد سيد" style="object-position:center 20%" loading="lazy"/><div class="founder-image-gradient"></div><a href="https://www.linkedin.com/in/ahmedsayed1407/?locale=en" target="_blank" rel="noopener noreferrer" class="founder-linkedin"><svg><use href="#icon-linkedin"/></svg></a><div class="founder-info"><h3 class="founder-name">أحمد سيد</h3><p class="founder-role">مدير تجربة التعلم والتصميم الأكاديمي</p></div></div>
-              <div class="founder-bio"><p>خبير في تصميم المناهج وتطوير تجارب التعلم الرقمية</p></div>
-            </div>
+            <?php endforeach; ?>
           </div>
         </div>
       </section>
+      <?php endif; ?>
 
       <!-- Early Access Form -->
+      <?php if (sectionEnabled('early_access')): ?>
       <section id="early-access" class="py-20 form-section">
         <div class="section-container">
           <div class="form-card" data-anim="fade-up">
@@ -391,36 +426,45 @@ $content = $settings['content'];
           </div>
         </div>
       </section>
+      <?php endif; ?>
 
       <!-- CTA -->
+      <?php if (sectionEnabled('cta')): ?>
       <section id="contact" class="py-20 cta-section">
         <div class="section-container">
           <div class="text-center" style="max-width:56rem;margin:0 auto" data-anim="fade-up">
             <h2 class="section-title mb-6" style="font-size:1.875rem;letter-spacing:-0.02em;line-height:1.2"><?= htmlspecialchars($content['cta_title']) ?></h2>
             <p class="section-subtitle" style="color:inherit;opacity:0.9;margin-bottom:2.5rem;font-size:1.25rem"><?= htmlspecialchars($content['cta_subtitle']) ?></p>
             <div class="hero-actions" style="justify-content:center">
-              <a href="mailto:info@learn.gheir.com" class="btn-white">تواصل معنا</a>
+              <a href="mailto:<?= htmlspecialchars($site['contact_email'] ?? 'info@learn.gheir.com') ?>" class="btn-white">تواصل معنا</a>
               <a href="#early-access" class="btn-outline"><?= htmlspecialchars($content['hero_cta_primary']) ?></a>
             </div>
           </div>
         </div>
       </section>
+      <?php endif; ?>
     </main>
 
     <!-- Footer -->
     <footer class="footer">
       <div class="section-container footer-inner">
         <div class="footer-brand">
-          <a href="#home" class="footer-logo"><svg><use href="#icon-graduation-cap"/></svg><span class="logo-text gradient-text">Learn.Gheir</span></a>
-          <div class="footer-email"><svg><use href="#icon-mail"/></svg><a href="mailto:info@learn.gheir.com">info@learn.gheir.com</a></div>
+          <a href="#home" class="footer-logo"><svg><use href="#icon-graduation-cap"/></svg><span class="logo-text gradient-text"><?= htmlspecialchars($site['logo_text'] ?? 'Learn.Gheir') ?></span></a>
+          <div class="footer-email"><svg><use href="#icon-mail"/></svg><a href="mailto:<?= htmlspecialchars($social['email'] ?? $site['contact_email'] ?? 'info@learn.gheir.com') ?>"><?= htmlspecialchars($social['email'] ?? $site['contact_email'] ?? 'info@learn.gheir.com') ?></a></div>
         </div>
         <div class="footer-social">
           <div class="social-links">
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn"><svg><use href="#icon-linkedin"/></svg></a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Twitter"><svg><use href="#icon-twitter"/></svg></a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram"><svg><use href="#icon-instagram"/></svg></a>
+            <?php if (!empty($social['linkedin'])): ?>
+            <a href="<?= htmlspecialchars($social['linkedin']) ?>" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn"><svg><use href="#icon-linkedin"/></svg></a>
+            <?php endif; ?>
+            <?php if (!empty($social['twitter'])): ?>
+            <a href="<?= htmlspecialchars($social['twitter']) ?>" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Twitter"><svg><use href="#icon-twitter"/></svg></a>
+            <?php endif; ?>
+            <?php if (!empty($social['instagram'])): ?>
+            <a href="<?= htmlspecialchars($social['instagram']) ?>" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram"><svg><use href="#icon-instagram"/></svg></a>
+            <?php endif; ?>
           </div>
-          <p class="footer-copy">© <span id="footerYear"></span> Learn.Gheir. جميع الحقوق محفوظة</p>
+          <p class="footer-copy">© <span id="footerYear"></span> <?= htmlspecialchars($site['title'] ?? 'Learn.Gheir') ?>. <?= htmlspecialchars($site['footer_text'] ?? 'جميع الحقوق محفوظة') ?></p>
         </div>
       </div>
     </footer>

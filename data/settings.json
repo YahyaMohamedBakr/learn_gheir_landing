@@ -72,5 +72,64 @@
     "encryption": "tls",
     "from_email": "",
     "from_name": "Learn.Gheir"
+  },
+  "site": {
+    "title": "Learn.Gheir",
+    "description": "منصة تعليمية ذكية تستخدم الذكاء الاصطناعي لتقديم تجربة تعلم مخصصة لكل متعلم عربي",
+    "logo_text": "Learn.Gheir",
+    "contact_email": "info@learn.gheir.com",
+    "footer_text": "جميع الحقوق محفوظة"
+  },
+  "menu": {
+    "items": [
+      { "label": "الرئيسية", "href": "#home" },
+      { "label": "المميزات", "href": "#features" },
+      { "label": "الفريق", "href": "#team" },
+      { "label": "تواصل معنا", "href": "#contact" }
+    ]
+  },
+  "sections": {
+    "hero": { "label": "القسم الرئيسي (Hero)", "enabled": true },
+    "problem": { "label": "قسم المشكلة", "enabled": true },
+    "solution": { "label": "قسم الحل", "enabled": true },
+    "learning_paths": { "label": "قسم مسارات التعلم", "enabled": true },
+    "decision_logic": { "label": "قسم منطق القرار", "enabled": true },
+    "features": { "label": "قسم المميزات", "enabled": true },
+    "vision": { "label": "قسم رؤية 2030", "enabled": true },
+    "team": { "label": "قسم الفريق", "enabled": true },
+    "early_access": { "label": "قسم التسجيل المبكر", "enabled": true },
+    "cta": { "label": "قسم الدعوة للتواصل (CTA)", "enabled": true }
+  },
+  "team": [
+    {
+      "id": 1,
+      "name": "مصطفى عطية",
+      "role": "الاستراتيجية والعمليات",
+      "bio": "خبرة في إدارة المشاريع التعليمية وتطوير الاستراتيجيات التقنية",
+      "image": "assets/img/mostafa.webp",
+      "linkedin": "https://www.linkedin.com/in/mostafaattya/"
+    },
+    {
+      "id": 2,
+      "name": "يحيى محمد",
+      "role": "التقنية والذكاء الاصطناعي",
+      "bio": "متخصص في تطوير حلول الذكاء الاصطناعي والتعلم الآلي",
+      "image": "assets/img/yahya.jpg",
+      "linkedin": ""
+    },
+    {
+      "id": 3,
+      "name": "أحمد سيد",
+      "role": "مدير تجربة التعلم والتصميم الأكاديمي",
+      "bio": "خبير في تصميم المناهج وتطوير تجارب التعلم الرقمية",
+      "image": "assets/img/ahmed_sayed.webp",
+      "linkedin": "https://www.linkedin.com/in/ahmedsayed1407/?locale=en"
+    }
+  ],
+  "social": {
+    "linkedin": "https://linkedin.com",
+    "twitter": "https://twitter.com",
+    "instagram": "https://instagram.com",
+    "email": "info@learn.gheir.com"
   }
 }
