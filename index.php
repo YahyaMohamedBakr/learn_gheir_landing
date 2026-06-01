@@ -43,6 +43,8 @@ function sectionEnabled($key) {
       --ring: <?= $c['ring']['h'] ?> <?= $c['ring']['s'] ?>% <?= $c['ring']['l'] ?>%;
       --destructive: <?= $c['destructive']['h'] ?> <?= $c['destructive']['s'] ?>% <?= $c['destructive']['l'] ?>%;
       --destructive-foreground: <?= $c['destructive-foreground']['h'] ?> <?= $c['destructive-foreground']['s'] ?>% <?= $c['destructive-foreground']['l'] ?>%;
+      --gradient-interactive: linear-gradient(135deg, hsl(46, 95%, 70%), hsl(70, 69%, 46%));
+      --gradient-structured: linear-gradient(135deg, hsl(210, 10%, 65%), hsl(210, 10%, 40%));
     }
   </style>
 </head>

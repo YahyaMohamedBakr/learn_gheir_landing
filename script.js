@@ -189,6 +189,16 @@
 
         setTimeout(function() {
           el.classList.add('anim-' + anim);
+          // Animate any progress bars inside this element
+          var bars = el.querySelectorAll('[data-progress]');
+          bars.forEach(function(bar) {
+            var targetWidth = bar.getAttribute('data-target-width');
+            if (targetWidth) {
+              bar.style.transition = 'width 1s ease-out';
+              void bar.offsetWidth;
+              bar.style.width = targetWidth;
+            }
+          });
         }, delay);
 
         observer.unobserve(el);
@@ -221,23 +231,43 @@
   animEls.forEach(function(el) { observer.observe(el); });
 })();
 
-// ===== Progress Bar Animations =====
+// ===== Progress Bar Animations (standalone bars without data-anim parent) =====
 (function() {
   if (!window.IntersectionObserver) return;
 
   var bars = document.querySelectorAll('[data-progress]');
   if (bars.length === 0) return;
 
+  // Immediately collapse all bars to prevent flash
+  bars.forEach(function(bar) {
+    var targetWidth = bar.style.width;
+    if (!targetWidth) {
+      targetWidth = window.getComputedStyle(bar).width;
+    }
+    bar.setAttribute('data-target-width', targetWidth);
+    bar.style.width = '0';
+  });
+
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
-        entry.target.classList.add('animated');
+        var bar = entry.target;
+        if (bar.closest('[data-anim]')) return;
+        var targetWidth = bar.getAttribute('data-target-width');
+        if (targetWidth) {
+          bar.style.transition = 'width 1s ease-out';
+          void bar.offsetWidth;
+          bar.style.width = targetWidth;
+        }
         observer.unobserve(entry.target);
       }
     });
   }, { threshold: 0.1 });
 
-  bars.forEach(function(bar) { observer.observe(bar); });
+  bars.forEach(function(bar) {
+    if (bar.closest('[data-anim]')) return;
+    observer.observe(bar);
+  });
 })();
 
 // ===== Number Counter Animation (data-counter) =====
