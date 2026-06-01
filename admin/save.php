@@ -152,4 +152,26 @@ if ($section === 'social') {
     saveAndExit($settings, $settingsFile, 'dashboard.php?tab=social');
 }
 
+if ($section === 'submissions_delete') {
+    $submissionsFile = __DIR__ . '/../data/submissions.json';
+    $submissions = [];
+    if (file_exists($submissionsFile)) {
+        $submissions = json_decode(file_get_contents($submissionsFile), true) ?? [];
+    }
+    $deleteId = (int)($_POST['submission_id'] ?? 0);
+    $submissions = array_values(array_filter($submissions, function($s) use ($deleteId) {
+        return ($s['id'] ?? 0) !== $deleteId;
+    }));
+    file_put_contents($submissionsFile, json_encode($submissions, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    $_SESSION['admin_msg'] = 'تم حذف الطلب';
+    saveAndExit($settings, $settingsFile, 'dashboard.php?tab=submissions');
+}
+
+if ($section === 'submissions_clear') {
+    $submissionsFile = __DIR__ . '/../data/submissions.json';
+    file_put_contents($submissionsFile, json_encode([], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    $_SESSION['admin_msg'] = 'تم حذف جميع الطلبات';
+    saveAndExit($settings, $settingsFile, 'dashboard.php?tab=submissions');
+}
+
 header('Location: dashboard.php');

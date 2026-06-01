@@ -164,12 +164,39 @@
     });
     formData.timestamp = new Date().toISOString();
 
-    var submissions = JSON.parse(localStorage.getItem('earlyAccessSubmissions') || '[]');
-    submissions.push(formData);
-    localStorage.setItem('earlyAccessSubmissions', JSON.stringify(submissions));
+    var submitBtn = form.querySelector('[type="submit"]');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'جاري الإرسال...';
+    }
 
-    window.showToast('تم التسجيل بنجاح', 'شكراً لانضمامك إلى المجموعة التجريبية. سنتواصل معك قريباً');
-    form.reset();
+    fetch('submit-form.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (data.success) {
+        window.showToast('تم التسجيل بنجاح', 'شكراً لانضمامك إلى المجموعة التجريبية. سنتواصل معك قريباً');
+        form.reset();
+      } else {
+        window.showToast('خطأ في الإرسال', data.message || 'حدث خطأ غير متوقع', 'destructive');
+      }
+    })
+    .catch(function() {
+      var submissions = JSON.parse(localStorage.getItem('earlyAccessSubmissions') || '[]');
+      submissions.push(formData);
+      localStorage.setItem('earlyAccessSubmissions', JSON.stringify(submissions));
+      window.showToast('تم التسجيل محلياً', 'تعذر الاتصال بالخادم، تم حفظ بياناتك محلياً وسيتم مزامنتها لاحقاً');
+      form.reset();
+    })
+    .finally(function() {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'إرسال الطلب';
+      }
+    });
   });
 })();
 

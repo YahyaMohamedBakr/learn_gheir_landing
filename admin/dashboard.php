@@ -91,6 +91,12 @@ $colors = $settings['colors'] ?? [];
       .dropzone:hover, .dropzone.dragover { border-color:var(--admin-primary); background:rgba(59,130,246,0.05); }
       .dropzone-text { color:var(--admin-text-muted); font-size:0.875rem; }
       .dropzone-text strong { color:var(--admin-primary); }
+      .submissions-table { width:100%; border-collapse:collapse; font-size:0.875rem; }
+      .submissions-table th { text-align:right; padding:0.625rem 0.75rem; background:var(--admin-bg); border-bottom:2px solid var(--admin-border); font-weight:600; color:var(--admin-text); white-space:nowrap; }
+      .submissions-table td { padding:0.5rem 0.75rem; border-bottom:1px solid var(--admin-border); }
+      .submissions-table tbody tr:hover { background:rgba(59,130,246,0.04); }
+      .submissions-table .btn-danger { background:#ef4444; color:#fff; border:none; border-radius:0.375rem; cursor:pointer; }
+      .submissions-table .btn-danger:hover { background:#dc2626; }
     </style>
 </head>
 <body>
@@ -140,6 +146,10 @@ $colors = $settings['colors'] ?? [];
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                 <span>إعدادات SMTP</span>
             </a>
+            <a href="?tab=submissions" class="<?= $activeTab === 'submissions' ? 'active' : '' ?>">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                <span>الطلبات</span>
+            </a>
         </div>
         <div class="admin-main">
             <div class="section-header">
@@ -153,6 +163,7 @@ $colors = $settings['colors'] ?? [];
                     <?php elseif ($activeTab === 'media'): ?>مكتبة الوسائط
                     <?php elseif ($activeTab === 'social'): ?>روابط التواصل الاجتماعي
                     <?php elseif ($activeTab === 'smtp'): ?>إعدادات البريد الإلكتروني (SMTP)
+                    <?php elseif ($activeTab === 'submissions'): ?>طلبات التسجيل المبكر
                     <?php endif; ?>
                 </h2>
                 <a href="../" target="_blank" class="btn btn-outline">عرض الموقع</a>
@@ -776,6 +787,85 @@ $colors = $settings['colors'] ?? [];
                         <button type="submit" class="btn btn-outline">إرسال اختبار</button>
                     </div>
                 </form>
+            </div>
+            <?php endif; ?>
+
+            <!-- Submissions Tab -->
+            <?php if ($activeTab === 'submissions'):
+                $submissionsFile = __DIR__ . '/../data/submissions.json';
+                $allSubmissions = [];
+                if (file_exists($submissionsFile)) {
+                    $allSubmissions = json_decode(file_get_contents($submissionsFile), true) ?? [];
+                }
+                $allSubmissions = array_reverse($allSubmissions);
+                $roleLabels = [
+                    'student' => 'طالب',
+                    'parent' => 'ولي أمر',
+                    'teacher' => 'معلم',
+                    'institution' => 'مؤسسة تعليمية',
+                    'investor' => 'مستثمر',
+                    'partner' => 'شريك محتمل'
+                ];
+            ?>
+            <div class="card">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem">
+                    <p style="color:var(--admin-text-muted);font-size:0.875rem">جميع طلبات التسجيل المبكر من الموقع.</p>
+                    <?php if (count($allSubmissions) > 0): ?>
+                    <form method="POST" action="save.php" onsubmit="return confirm('هل أنت متأكد من حذف جميع الطلبات؟')">
+                        <input type="hidden" name="_section" value="submissions_clear">
+                        <button type="submit" class="btn btn-sm btn-danger">حذف الكل</button>
+                    </form>
+                    <?php endif; ?>
+                </div>
+                <?php if (count($allSubmissions) > 0): ?>
+                <div style="overflow-x:auto">
+                    <table class="submissions-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>الاسم</th>
+                                <th>البريد الإلكتروني</th>
+                                <th>رقم الهاتف</th>
+                                <th>المدينة</th>
+                                <th>الصفة</th>
+                                <th>الرسالة</th>
+                                <th>التاريخ</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $i = 1; foreach ($allSubmissions as $sub): ?>
+                            <tr>
+                                <td><?= $i++ ?></td>
+                                <td><strong><?= htmlspecialchars($sub['fullName'] ?? '') ?></strong></td>
+                                <td><a href="mailto:<?= htmlspecialchars($sub['email'] ?? '') ?>" style="color:var(--admin-primary);text-decoration:none"><?= htmlspecialchars($sub['email'] ?? '') ?></a></td>
+                                <td dir="ltr" style="text-align:right"><?= htmlspecialchars($sub['phone'] ?? '') ?></td>
+                                <td><?= htmlspecialchars($sub['city'] ?? '') ?></td>
+                                <td><?= htmlspecialchars($roleLabels[$sub['role'] ?? ''] ?? $sub['role'] ?? '') ?></td>
+                                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="<?= htmlspecialchars($sub['message'] ?? '') ?>">
+                                    <?= htmlspecialchars($sub['message'] ?: '-') ?>
+                                </td>
+                                <td style="font-size:0.8125rem;color:var(--admin-text-muted);white-space:nowrap">
+                                    <?php
+                                    $ts = $sub['timestamp'] ?? '';
+                                    echo $ts ? date('Y-m-d H:i', strtotime($ts)) : '-';
+                                    ?>
+                                </td>
+                                <td>
+                                    <form method="POST" action="save.php" onsubmit="return confirm('حذف هذا الطلب؟')">
+                                        <input type="hidden" name="_section" value="submissions_delete">
+                                        <input type="hidden" name="submission_id" value="<?= $sub['id'] ?? 0 ?>">
+                                        <button type="submit" class="btn btn-sm btn-danger" style="padding:0.25rem 0.5rem;font-size:0.75rem">✕</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <?php else: ?>
+                <p style="color:var(--admin-text-muted);font-size:0.875rem;text-align:center;padding:2rem">لا توجد طلبات حتى الآن</p>
+                <?php endif; ?>
             </div>
             <?php endif; ?>
         </div>

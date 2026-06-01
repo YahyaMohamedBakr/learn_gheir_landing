@@ -145,12 +145,12 @@
         "form_subtitle": "كن من أول ٥٠ مستخدم وساعدنا في تشكيل مستقبل التعلم العربي الذكي واحصل على خصم ١٠٠٪ دائم"
     },
     "smtp": {
-        "host": "",
+        "host": "smtp.zoho.com",
         "port": 587,
-        "username": "",
+        "username": "contact@learn.gheir.org",
         "password": "",
         "encryption": "tls",
-        "from_email": "",
+        "from_email": "contact@learn.gheir.org",
         "from_name": "Learn.Gheir"
     },
     "site": {
