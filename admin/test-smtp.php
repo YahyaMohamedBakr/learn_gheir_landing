@@ -17,18 +17,20 @@ if (!$testEmail) {
     exit;
 }
 
-$to = $testEmail;
-$subject = 'اختبار إعدادات SMTP - Learn.Gheir';
-$message = "هذا بريد اختبار من لوحة تحكم Learn.Gheir.\n\nإذا وصلتك هذه الرسالة، فإعدادات SMTP تعمل بشكل صحيح.\n\nشكراً لك.";
-$headers = 'From: ' . $smtp['from_name'] . ' <' . $smtp['from_email'] . '>' . "\r\n" . 'Reply-To: ' . $smtp['from_email'] . "\r\n" . 'X-Mailer: PHP/' . phpversion();
+require_once __DIR__ . '/../inc/smtp.php';
 
-$success = mail($to, $subject, $message, $headers, '-f ' . $smtp['from_email']);
+$smtpMailer = new SMTP($smtp);
+$result = $smtpMailer->send(
+    $testEmail,
+    'اختبار إعدادات SMTP - Learn.Gheir',
+    "هذا بريد اختبار من لوحة تحكم Learn.Gheir.\n\nإذا وصلتك هذه الرسالة، فإعدادات SMTP تعمل بشكل صحيح.\n\nشكراً لك."
+);
 
-if ($success) {
+if ($result['success']) {
     $_SESSION['admin_msg'] = 'تم إرسال بريد الاختبار بنجاح إلى ' . htmlspecialchars($testEmail);
     $_SESSION['admin_msg_type'] = 'success';
 } else {
-    $_SESSION['admin_msg'] = 'فشل إرسال البريد. تحقق من إعدادات SMTP ومن أن الخادم يدعم إرسال البريد.';
+    $_SESSION['admin_msg'] = 'فشل إرسال البريد: ' . $result['message'];
     $_SESSION['admin_msg_type'] = 'error';
 }
 
