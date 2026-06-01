@@ -433,14 +433,14 @@ $colors = $settings['colors'] ?? [];
                         </div>
                     </div>
 
-                    <h3 style="margin:1.5rem 0 1rem;font-size:1.125rem">اتجاه القائمة</h3>
+                    <h3 style="margin:1.5rem 0 1rem;font-size:1.125rem">وضعية القائمة</h3>
                     <div class="form-group">
                         <label>محاذاة القائمة في الهيدر</label>
-                        <select name="site_menu_alignment">
-                            <option value="right" <?= ($site['menu_alignment'] ?? 'right') === 'right' ? 'selected' : '' ?>>اليمين (افتراضي عربي)</option>
-                            <option value="left" <?= ($site['menu_alignment'] ?? 'right') === 'left' ? 'selected' : '' ?>>الشمال</option>
+                        <select name="site_menu_position">
+                            <option value="right" <?= ($site['menu_position'] ?? 'center') === 'right' ? 'selected' : '' ?>>على اليمين (بجوار اللوجو)</option>
+                            <option value="center" <?= ($site['menu_position'] ?? 'center') === 'center' ? 'selected' : '' ?>>في المنتصف</option>
+                            <option value="left" <?= ($site['menu_position'] ?? 'center') === 'left' ? 'selected' : '' ?>>على الشمال (قبل زر CTA)</option>
                         </select>
-                        <small style="color:var(--admin-text-muted);font-size:0.75rem">بالنسبة للاتجاه RTL، اليمين يعني بداية الصفحة والشمال يعني نهايتها.</small>
                     </div>
 
                     <button type="submit" class="btn btn-primary">حفظ الإعدادات</button>

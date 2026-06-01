@@ -87,28 +87,32 @@ function sectionEnabled($key) {
   $logoImage = $site['logo_image'] ?? '';
   $logoWidth = $site['logo_width'] ?? 40;
   $logoHeight = $site['logo_height'] ?? 40;
-  $menuAlign = $site['menu_alignment'] ?? 'right';
+  $menuPos = $site['menu_position'] ?? 'center';
   ?>
   <header id="header" class="header">
     <div class="section-container" style="width:100%">
       <div class="header-inner">
-        <a href="#home" class="logo">
-          <?php if ($logoType === 'image' && !empty($logoImage)): ?>
-          <img src="<?= htmlspecialchars($logoImage) ?>" alt="<?= htmlspecialchars($logoText) ?>" style="width:<?= (int)$logoWidth ?>px;height:<?= (int)$logoHeight ?>px;object-fit:contain">
-          <?php else: ?>
-          <svg class="logo-icon"><use href="#icon-graduation-cap"/></svg>
-          <span class="logo-text gradient-text"><?= htmlspecialchars($logoText) ?></span>
-          <?php endif; ?>
-        </a>
-        <nav class="nav-items" id="navItems" style="margin-<?= $menuAlign === 'left' ? 'left' : 'right' ?>:auto">
+        <div class="header-section header-right">
+          <a href="#home" class="logo">
+            <?php if ($logoType === 'image' && !empty($logoImage)): ?>
+            <img src="<?= htmlspecialchars($logoImage) ?>" alt="<?= htmlspecialchars($logoText) ?>" style="width:<?= (int)$logoWidth ?>px;height:<?= (int)$logoHeight ?>px;object-fit:contain">
+            <?php else: ?>
+            <svg class="logo-icon"><use href="#icon-graduation-cap"/></svg>
+            <span class="logo-text gradient-text"><?= htmlspecialchars($logoText) ?></span>
+            <?php endif; ?>
+          </a>
+        </div>
+        <nav class="nav-items" id="navItems" data-position="<?= htmlspecialchars($menuPos) ?>">
           <?php foreach ($menuItems as $item): ?>
             <a href="<?= htmlspecialchars($item['href']) ?>" class="nav-link mobile-nav-link"><?= htmlspecialchars($item['label']) ?></a>
           <?php endforeach; ?>
           <a href="#early-access" class="nav-cta mobile-nav-link"><?= htmlspecialchars($content['hero_cta_primary']) ?></a>
         </nav>
-        <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Toggle menu">
-          <svg width="24" height="24" viewBox="0 0 24 24"><use href="#icon-menu"/></svg>
-        </button>
+        <div class="header-section header-left">
+          <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Toggle menu">
+            <svg width="24" height="24" viewBox="0 0 24 24"><use href="#icon-menu"/></svg>
+          </button>
+        </div>
       </div>
     </div>
   </header>

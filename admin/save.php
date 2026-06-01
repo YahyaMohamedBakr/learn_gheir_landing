@@ -63,6 +63,7 @@ if ($section === 'site') {
     $settings['site']['logo_image'] = $_POST['site_logo_image'] ?? '';
     $settings['site']['logo_width'] = (int)($_POST['site_logo_width'] ?? 40);
     $settings['site']['logo_height'] = (int)($_POST['site_logo_height'] ?? 40);
+    $settings['site']['menu_position'] = $_POST['site_menu_position'] ?? 'center';
     $settings['site']['menu_alignment'] = $_POST['site_menu_alignment'] ?? 'right';
     $settings['site']['contact_email'] = $_POST['site_contact_email'] ?? '';
     $settings['site']['footer_text'] = $_POST['site_footer_text'] ?? '';
