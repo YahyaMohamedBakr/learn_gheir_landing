@@ -1,9 +1,9 @@
 {
     "colors": {
         "primary": {
-            "h": 211,
-            "s": 70,
-            "l": 58,
+            "h": 70,
+            "s": 69,
+            "l": 46,
             "label": "اللون الأساسي"
         },
         "primary-foreground": {
@@ -13,51 +13,51 @@
             "label": "نص على الأساسي"
         },
         "secondary": {
-            "h": 215,
-            "s": 20,
-            "l": 95,
+            "h": 210,
+            "s": 13,
+            "l": 94,
             "label": "اللون الثانوي"
         },
         "secondary-foreground": {
-            "h": 215,
-            "s": 60,
-            "l": 10,
+            "h": 67,
+            "s": 51,
+            "l": 14,
             "label": "نص على الثانوي"
         },
         "accent": {
-            "h": 211,
-            "s": 80,
-            "l": 65,
+            "h": 46,
+            "s": 95,
+            "l": 70,
             "label": "لون التمييز"
         },
         "accent-foreground": {
-            "h": 0,
-            "s": 0,
-            "l": 100,
+            "h": 67,
+            "s": 51,
+            "l": 14,
             "label": "نص على التمييز"
         },
         "background": {
-            "h": 0,
-            "s": 0,
-            "l": 100,
+            "h": 210,
+            "s": 13,
+            "l": 94,
             "label": "الخلفية"
         },
         "foreground": {
-            "h": 215,
-            "s": 60,
-            "l": 10,
+            "h": 67,
+            "s": 51,
+            "l": 14,
             "label": "النص الأساسي"
         },
         "muted": {
-            "h": 215,
-            "s": 20,
-            "l": 96,
+            "h": 210,
+            "s": 13,
+            "l": 94,
             "label": "خلفية مطفية"
         },
         "muted-foreground": {
-            "h": 215,
-            "s": 25,
-            "l": 40,
+            "h": 79,
+            "s": 22,
+            "l": 37,
             "label": "نص مطفى"
         },
         "card": {
@@ -67,21 +67,21 @@
             "label": "خلفية البطاقة"
         },
         "card-foreground": {
-            "h": 215,
-            "s": 60,
-            "l": 10,
+            "h": 67,
+            "s": 51,
+            "l": 14,
             "label": "نص البطاقة"
         },
         "border": {
-            "h": 215,
-            "s": 20,
+            "h": 210,
+            "s": 13,
             "l": 88,
             "label": "الحدود"
         },
         "ring": {
-            "h": 211,
-            "s": 70,
-            "l": 58,
+            "h": 70,
+            "s": 69,
+            "l": 46,
             "label": "حلقة التركيز"
         },
         "destructive": {
@@ -161,8 +161,8 @@
         "logo_image": "assets\/img\/upload_6a1d52f2420a6.png",
         "logo_width": 40,
         "logo_height": 40,
-        "menu_position": "center",
-        "menu_alignment": "left",
+        "menu_position": "right",
+        "menu_alignment": "right",
         "contact_email": "info@learn.gheir.com",
         "footer_text": "جميع الحقوق محفوظة"
     },
@@ -242,8 +242,8 @@
             "name": "يحيى محمد",
             "role": "التقنية والذكاء الاصطناعي",
             "bio": "متخصص في تطوير حلول الذكاء الاصطناعي والتعلم الآلي",
-            "image": "assets\/img\/yahya.jpg",
-            "linkedin": ""
+            "image": "assets\/img\/yahya.webp",
+            "linkedin": "https:\/\/www.linkedin.com\/in\/yahya-bakr-044186120\/"
         },
         {
             "id": 3,

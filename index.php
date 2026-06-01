@@ -81,6 +81,16 @@ function sectionEnabled($key) {
 
   <div id="toastContainer" class="toast-container"></div>
 
+  <!-- Preloader -->
+  <div class="preloader">
+    <div class="preloader-inner">
+      <img src="assets/img/Gh_Icon.png" alt="Learn.Gheir" class="preloader-logo">
+      <div class="preloader-bar">
+        <div class="preloader-bar-fill"></div>
+      </div>
+    </div>
+  </div>
+
   <?php
   $logoType = $site['logo_type'] ?? 'text';
   $logoText = $site['logo_text'] ?? 'Learn.Gheir';
@@ -89,7 +99,7 @@ function sectionEnabled($key) {
   $logoHeight = $site['logo_height'] ?? 40;
   $menuPos = $site['menu_position'] ?? 'center';
   ?>
-  <header id="header" class="header">
+  <header id="header" class="header header-transparent">
     <div class="section-container" style="width:100%">
       <div class="header-inner">
         <div class="header-section header-right">
@@ -109,8 +119,10 @@ function sectionEnabled($key) {
           <a href="#early-access" class="nav-cta mobile-nav-link"><?= htmlspecialchars($content['hero_cta_primary']) ?></a>
         </nav>
         <div class="header-section header-left">
-          <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Toggle menu">
-            <svg width="24" height="24" viewBox="0 0 24 24"><use href="#icon-menu"/></svg>
+          <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="القائمة">
+            <span></span>
+            <span></span>
+            <span></span>
           </button>
         </div>
       </div>
@@ -490,6 +502,11 @@ function sectionEnabled($key) {
       </div>
     </footer>
   </div>
+
+  <!-- Scroll to Top -->
+  <button class="scroll-to-top" aria-label="العودة للأعلى">
+    <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
 
   <script src="script.js"></script>
 </body>
