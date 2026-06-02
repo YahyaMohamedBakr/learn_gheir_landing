@@ -17,20 +17,28 @@ if (!$testEmail) {
     exit;
 }
 
-require_once __DIR__ . '/../inc/smtp.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
-$smtpMailer = new SMTP($smtp);
-$result = $smtpMailer->send(
-    $testEmail,
-    'اختبار إعدادات SMTP - Learn.Gheir',
-    "هذا بريد اختبار من لوحة تحكم Learn.Gheir.\n\nإذا وصلتك هذه الرسالة، فإعدادات SMTP تعمل بشكل صحيح.\n\nشكراً لك."
-);
+$mail = new PHPMailer\PHPMailer\PHPMailer(true);
+$mail->isSMTP();
+$mail->Host = $smtp['host'];
+$mail->Port = $smtp['port'];
+$mail->SMTPAuth = !empty($smtp['username']);
+$mail->Username = $smtp['username'];
+$mail->Password = $smtp['password'];
+$mail->SMTPSecure = $smtp['encryption'] === 'none' ? '' : $smtp['encryption'];
+$mail->CharSet = 'UTF-8';
+$mail->setFrom($smtp['from_email'], $smtp['from_name']);
+$mail->addAddress($testEmail);
+$mail->Subject = 'اختبار إعدادات SMTP - Learn.Gheir';
+$mail->Body = "هذا بريد اختبار من لوحة تحكم Learn.Gheir.\n\nإذا وصلتك هذه الرسالة، فإعدادات SMTP تعمل بشكل صحيح.\n\nشكراً لك.";
 
-if ($result['success']) {
+try {
+    $mail->send();
     $_SESSION['admin_msg'] = 'تم إرسال بريد الاختبار بنجاح إلى ' . htmlspecialchars($testEmail);
     $_SESSION['admin_msg_type'] = 'success';
-} else {
-    $_SESSION['admin_msg'] = 'فشل إرسال البريد: ' . $result['message'];
+} catch (Exception $e) {
+    $_SESSION['admin_msg'] = 'فشل إرسال البريد: ' . $mail->ErrorInfo;
     $_SESSION['admin_msg_type'] = 'error';
 }
 

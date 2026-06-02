@@ -92,10 +92,26 @@ if (!empty($smtpConfig['host'])) {
         . "الرسالة: " . ($message ?: "لا يوجد") . "\n"
         . "التاريخ: " . date('Y-m-d H:i:s');
 
-    require_once __DIR__ . '/inc/smtp.php';
-    $smtp = new SMTP($smtpConfig);
-    $result = $smtp->send($contactEmail, 'طلب تسجيل مبكر جديد - Learn.Gheir', $emailBody);
-    $emailSent = $result['success'];
+    require_once __DIR__ . '/vendor/autoload.php';
+    $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+    $mail->isSMTP();
+    $mail->Host = $smtpConfig['host'];
+    $mail->Port = $smtpConfig['port'];
+    $mail->SMTPAuth = !empty($smtpConfig['username']);
+    $mail->Username = $smtpConfig['username'];
+    $mail->Password = $smtpConfig['password'];
+    $mail->SMTPSecure = $smtpConfig['encryption'] === 'none' ? '' : $smtpConfig['encryption'];
+    $mail->CharSet = 'UTF-8';
+    $mail->setFrom($smtpConfig['from_email'], $smtpConfig['from_name']);
+    $mail->addAddress($contactEmail);
+    $mail->Subject = 'طلب تسجيل مبكر جديد - Learn.Gheir';
+    $mail->Body = $emailBody;
+    try {
+        $mail->send();
+        $emailSent = true;
+    } catch (Exception $e) {
+        $emailSent = false;
+    }
 }
 
 echo json_encode([
