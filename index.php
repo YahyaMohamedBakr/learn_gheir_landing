@@ -465,7 +465,7 @@ function sectionEnabled($key) {
             <h2 class="section-title mb-6" style="font-size:1.875rem;letter-spacing:-0.02em;line-height:1.2"><?= htmlspecialchars($content['cta_title']) ?></h2>
             <p class="section-subtitle" style="color:inherit;opacity:0.9;margin-bottom:2.5rem;font-size:1.25rem"><?= htmlspecialchars($content['cta_subtitle']) ?></p>
             <div class="hero-actions" style="justify-content:center">
-              <a href="mailto:<?= htmlspecialchars($site['contact_email'] ?? 'contact@learn.gheir.com') ?>" class="btn-white">تواصل معنا</a>
+              <a href="mailto:<?= htmlspecialchars($site['contact_email'] ?? 'contact@learn.gheir.org') ?>" class="btn-white">تواصل معنا</a>
               <a href="#early-access" class="btn-outline"><?= htmlspecialchars($content['hero_cta_primary']) ?></a>
             </div>
           </div>
@@ -485,7 +485,7 @@ function sectionEnabled($key) {
             <svg><use href="#icon-graduation-cap"/></svg><span class="logo-text gradient-text"><?= htmlspecialchars($logoText) ?></span>
             <?php endif; ?>
           </a>
-          <div class="footer-email"><svg><use href="#icon-mail"/></svg><a href="mailto:<?= htmlspecialchars($social['email'] ?? $site['contact_email'] ?? 'contact@learn.gheir.com') ?>"><?= htmlspecialchars($social['email'] ?? $site['contact_email'] ?? 'contact@learn.gheir.com') ?></a></div>
+          <div class="footer-email"><svg><use href="#icon-mail"/></svg><a href="mailto:<?= htmlspecialchars($social['email'] ?? $site['contact_email'] ?? 'contact@learn.gheir.org') ?>"><?= htmlspecialchars($social['email'] ?? $site['contact_email'] ?? 'contact@learn.gheir.org') ?></a></div>
         </div>
         <div class="footer-social">
           <div class="social-links">

@@ -49,7 +49,7 @@ if (!$agreeToTerms) {
 $settingsFile = __DIR__ . '/data/settings.json';
 $settings = json_decode(file_get_contents($settingsFile), true);
 $smtpConfig = $settings['smtp'] ?? [];
-$contactEmail = $settings['site']['contact_email'] ?? 'contact@learn.gheir.com';
+$contactEmail = $settings['site']['contact_email'] ?? 'contact@learn.gheir.org';
 
 $submissionsFile = __DIR__ . '/data/submissions.json';
 $submissions = [];
